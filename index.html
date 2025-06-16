@@ -24,13 +24,15 @@
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 600px;
+            max-width: 600px; /* Reduced max-width slightly to provide more internal spacing */
             margin-left: auto;
             margin-right: auto;
-            height: 300px;
+            height: 350px; /* Increased height for better label visibility */
             max-height: 400px;
             border: 1px solid #0088cc; /* Telegram blue border */
             box-shadow: 0 0 10px rgba(0, 136, 204, 0.5); /* Subtle blue glow */
+            padding: 15px; /* Added padding to give charts more internal space */
+            box-sizing: border-box; /* Ensures padding doesn't increase total width/height beyond max-width/max-height */
         }
         /* Section titles, more integrated with the overall theme */
         .section-title {
@@ -343,106 +345,11 @@
 
     <script src="menu_script.js"></script>
     <script>
-        // Basic Chart.js Placeholder
-        const createChart = (id, type, label, data) => {
-            const ctx = document.getElementById(id);
-            if (ctx) {
-                new Chart(ctx, {
-                    type: type,
-                    data: {
-                        labels: label,
-                        datasets: [{
-                            label: 'Conceptual Data',
-                            data: data,
-                            backgroundColor: [
-                                'rgba(0, 136, 204, 0.7)', /* Telegram Blue */
-                                'rgba(102, 179, 255, 0.7)', /* Lighter Blue */
-                                'rgba(0, 102, 153, 0.7)', /* Darker Blue */
-                                'rgba(51, 153, 204, 0.7)'  /* Mid Blue */
-                            ],
-                            borderColor: [
-                                'rgba(0, 136, 204, 1)',
-                                'rgba(102, 179, 255, 1)',
-                                'rgba(0, 102, 153, 1)',
-                                'rgba(51, 153, 204, 1)'
-                            ],
-                            borderWidth: 1, /* Reduced border width for cleaner look */
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: true,
-                                position: 'top',
-                                labels: {
-                                    font: {
-                                        size: 14,
-                                        family: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif'
-                                    },
-                                    usePointStyle: true,
-                                    color: '#e0e0e0' /* Chart legend text color for dark theme */
-                                }
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    title: function(context) {
-                                        return wrapLabel(context[0].label);
-                                    },
-                                    label: function(context) {
-                                        return context.dataset.label + ': ' + context.formattedValue;
-                                    }
-                                },
-                                titleMarginBottom: 10,
-                                padding: 10,
-                                bodySpacing: 5,
-                                titleFont: { size: 14, weight: 'bold' },
-                                bodyFont: { size: 12 },
-                                backgroundColor: 'rgba(0,0,0,0.8)',
-                                borderColor: '#0088cc', /* Telegram blue border for tooltip */
-                                borderWidth: 1
-                            }
-                        },
-                        scales: {
-                            x: {
-                                ticks: {
-                                    color: '#e0e0e0', /* Chart axis text color for dark theme */
-                                    font: {
-                                        size: 12
-                                    },
-                                    autoSkip: false, // Prevent ticks from being skipped
-                                    maxRotation: 45, // Rotate labels to prevent overlap
-                                    minRotation: 0
-                                },
-                                grid: {
-                                    color: 'rgba(255, 255, 255, 0.1)' // Light grid lines for dark theme
-                                }
-                            },
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    color: '#e0e0e0', /* Chart axis text color for dark theme */
-                                    font: {
-                                        size: 12
-                                    }
-                                },
-                                grid: {
-                                    color: 'rgba(255, 255, 255, 0.1)' // Light grid lines for dark theme
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-        };
-
-        // Function to wrap labels (updated to be more robust)
-        const wrapLabel = (label) => {
+        // Function to wrap labels (updated to be more robust for longer labels)
+        const wrapLabel = (label, maxCharsPerLine = 15) => { // Adjusted default maxCharsPerLine
             const words = label.split(' ');
             let lines = [];
             let currentLine = '';
-            const maxCharsPerLine = 15; // Adjusted character limit for better fit
 
             words.forEach(word => {
                 if (currentLine.length + word.length + (currentLine ? 1 : 0) <= maxCharsPerLine) {
@@ -458,6 +365,126 @@
             return lines;
         };
 
+        // Basic Chart.js Placeholder
+        const createChart = (id, type, labels, data) => { // Changed label to labels to reflect array
+            const ctx = document.getElementById(id);
+            if (ctx) {
+                new Chart(ctx, {
+                    type: type,
+                    data: {
+                        labels: labels.map(label => wrapLabel(label)), // Apply wrapLabel to each label
+                        datasets: [{
+                            label: 'Conceptual Data',
+                            data: data,
+                            backgroundColor: [
+                                'rgba(0, 136, 204, 0.7)', /* Telegram Blue */
+                                'rgba(102, 179, 255, 0.7)', /* Lighter Blue */
+                                'rgba(0, 102, 153, 0.7)', /* Darker Blue */
+                                'rgba(51, 153, 204, 0.7)'  /* Mid Blue */
+                            ],
+                            borderColor: [
+                                'rgba(0, 136, 204, 1)',
+                                'rgba(102, 179, 255, 1)',
+                                'rgba(0, 102, 153, 1)',
+                                'rgba(51, 153, 204, 1)'
+                            ],
+                            borderWidth: 1,
+                            // Added for Pie Chart spacing
+                            spacing: (type === 'pie') ? 5 : 0, // Space between segments for pie
+                            hoverOffset: (type === 'pie') ? 10 : 0 // Hover effect for pie
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false, // Allows chart to fill container dimensions
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    font: {
+                                        size: 14,
+                                        family: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif'
+                                    },
+                                    usePointStyle: true,
+                                    color: '#e0e0e0'
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    title: function(context) {
+                                        // Tooltip title uses original label for clarity, not wrapped
+                                        return labels[context[0].dataIndex];
+                                    },
+                                    label: function(context) {
+                                        return context.dataset.label + ': ' + context.formattedValue;
+                                    }
+                                },
+                                titleMarginBottom: 10,
+                                padding: 10,
+                                bodySpacing: 5,
+                                titleFont: { size: 14, weight: 'bold' },
+                                bodyFont: { size: 12 },
+                                backgroundColor: 'rgba(0,0,0,0.8)',
+                                borderColor: '#0088cc',
+                                borderWidth: 1
+                            }
+                        },
+                        scales: {
+                            x: {
+                                display: true, // Ensure X-axis is displayed
+                                ticks: {
+                                    color: '#e0e0e0',
+                                    font: {
+                                        size: 12
+                                    },
+                                    autoSkip: false, // Prevent ticks from being skipped
+                                    maxRotation: 45, // Rotate labels to prevent overlap
+                                    minRotation: 0,
+                                    padding: 10 // Added padding to prevent labels from touching axis
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)',
+                                    drawOnChartArea: true // Ensure grid lines are drawn
+                                },
+                                // Added category percentage and bar percentage to control bar width and spacing
+                                barPercentage: 0.8,
+                                categoryPercentage: 0.8
+                            },
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    color: '#e0e0e0',
+                                    font: {
+                                        size: 12
+                                    }
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)',
+                                    drawOnChartArea: true
+                                },
+                                stacked: false // Ensure bars are not stacked unless intended
+                            }
+                        },
+                        // Specific options for Pie chart to ensure it fits well
+                        layout: {
+                            padding: {
+                                left: 10,
+                                right: 10,
+                                top: 10,
+                                bottom: 10
+                            }
+                        },
+                        elements: {
+                            arc: {
+                                borderWidth: 2 // Border for pie segments
+                            }
+                        }
+                    }
+                });
+            }
+        };
+
 
         // Create charts on page load
         document.addEventListener('DOMContentLoaded', () => {
@@ -466,4 +493,4 @@
         });
     </script>
 </body>
-    </html>
+</html>
