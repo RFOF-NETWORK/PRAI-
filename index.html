@@ -24,14 +24,14 @@
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 600px; /* Reduced max-width slightly to provide more internal spacing */
+            max-width: 650px; /* Increased max-width slightly to provide more internal spacing */
             margin-left: auto;
             margin-right: auto;
-            height: 350px; /* Increased height for better label visibility */
-            max-height: 400px;
+            height: 400px; /* Significantly increased height for better label visibility and preventing cutoff */
+            max-height: 450px;
             border: 1px solid #0088cc; /* Telegram blue border */
             box-shadow: 0 0 10px rgba(0, 136, 204, 0.5); /* Subtle blue glow */
-            padding: 15px; /* Added padding to give charts more internal space */
+            padding: 20px; /* Increased padding to give charts more internal space */
             box-sizing: border-box; /* Ensures padding doesn't increase total width/height beyond max-width/max-height */
         }
         /* Section titles, more integrated with the overall theme */
@@ -346,7 +346,7 @@
     <script src="menu_script.js"></script>
     <script>
         // Function to wrap labels (updated to be more robust for longer labels)
-        const wrapLabel = (label, maxCharsPerLine = 15) => { // Adjusted default maxCharsPerLine
+        const wrapLabel = (label, maxCharsPerLine = 12) => { // Reduced maxCharsPerLine for more aggressive wrapping
             const words = label.split(' ');
             let lines = [];
             let currentLine = '';
@@ -366,7 +366,7 @@
         };
 
         // Basic Chart.js Placeholder
-        const createChart = (id, type, labels, data) => { // Changed label to labels to reflect array
+        const createChart = (id, type, labels, data) => {
             const ctx = document.getElementById(id);
             if (ctx) {
                 new Chart(ctx, {
@@ -448,8 +448,8 @@
                                     drawOnChartArea: true // Ensure grid lines are drawn
                                 },
                                 // Added category percentage and bar percentage to control bar width and spacing
-                                barPercentage: 0.8,
-                                categoryPercentage: 0.8
+                                barPercentage: 0.7, // Slightly reduced bar width
+                                categoryPercentage: 0.7 // Slightly reduced category width
                             },
                             y: {
                                 beginAtZero: true,
@@ -469,10 +469,10 @@
                         // Specific options for Pie chart to ensure it fits well
                         layout: {
                             padding: {
-                                left: 10,
-                                right: 10,
-                                top: 10,
-                                bottom: 10
+                                left: 15, // Increased padding
+                                right: 15,
+                                top: 15,
+                                bottom: 15
                             }
                         },
                         elements: {
