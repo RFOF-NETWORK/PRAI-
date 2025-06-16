@@ -24,14 +24,14 @@
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 850px; /* Further increased max-width for even more horizontal space for labels */
+            max-width: 900px; /* Further increased max-width for even more horizontal space for labels */
             margin-left: auto;
             margin-right: auto;
-            height: 600px; /* Significantly increased height for better label visibility and preventing cutoff */
-            max-height: 650px; /* Adjusted max-height */
+            height: 650px; /* Significantly increased height for better label visibility and preventing cutoff */
+            max-height: 700px; /* Adjusted max-height */
             border: 1px solid #0088cc; /* Telegram blue border */
             box-shadow: 0 0 10px rgba(0, 136, 204, 0.5); /* Subtle blue glow */
-            padding: 10px; /* Reduced container padding here, control layout with Chart.js options */
+            padding: 5px; /* Reduced container padding here, control layout with Chart.js options */
             box-sizing: border-box; /* Ensures padding doesn't increase total width/height beyond max-width/max-height */
             display: flex;
             flex-direction: column;
@@ -47,10 +47,10 @@
         /* Adjust chart title margin to push it down from the top */
         .chart-container h3 {
             margin-top: 0; /* Remove default h3 top margin */
-            margin-bottom: 35px; /* Significantly increased space below the title, pushing chart down */
+            margin-bottom: 45px; /* Significantly increased space below the title, pushing chart down */
             text-align: center; /* Center the chart title */
             width: 100%; /* Ensure title takes full width */
-            padding-top: 10px; /* Add a bit of padding above the title itself */
+            padding-top: 15px; /* Added more padding above the title itself */
         }
 
         /* Section titles, more integrated with the overall theme */
@@ -372,7 +372,6 @@
             <a href="https://github.com/explore" target="_blank">GitHub Explore</a> |
             <a href="https://www.githubstatus.com/" target="_blank">System Status</a> |
             <a href="https://www.contributor-covenant.org/version/2/1/code_of_conduct/code_of_conduct.md" target="_blank">Code of Conduct</a> |
-            <a href="https://gh.io/mit" target="_blank">MIT License</a> |
             <a href="feed.xml" target="_blank">Subscribe via RSS Feed</a>
         </p>
     </footer>
@@ -380,7 +379,8 @@
     <script src="menu_script.js"></script>
     <script>
         // Function to wrap labels (tuned again for better readability with aggressive wrapping)
-        const wrapLabel = (label, maxCharsPerLine = 8) => { // Reduced maxCharsPerLine to force more breaks
+        // This version ensures no overlap by forcing breaks after very few characters if necessary.
+        const wrapLabel = (label, maxCharsPerLine = 7) => { // Further reduced maxCharsPerLine
             const words = label.split(' ');
             let lines = [];
             let currentLine = '';
@@ -388,13 +388,11 @@
             words.forEach(word => {
                 if (word.length > maxCharsPerLine) { // Handle very long individual words
                     let tempWord = word;
-                    while (tempWord.length > maxCharsPerLine) {
-                        lines.push(tempWord.substring(0, maxCharsPerLine) + '-'); // Add hyphen for forced breaks
+                    while (tempWord.length > 0) {
+                        lines.push(tempWord.substring(0, maxCharsPerLine)); // No hyphen, let Chart.js handle it
                         tempWord = tempWord.substring(maxCharsPerLine);
                     }
-                    if (tempWord) {
-                        currentLine += (currentLine ? ' ' : '') + tempWord;
-                    }
+                    currentLine = ''; // Reset currentLine after breaking a long word
                 } else if (currentLine.length + word.length + (currentLine ? 1 : 0) > maxCharsPerLine && currentLine !== '') {
                     lines.push(currentLine);
                     currentLine = word;
@@ -450,7 +448,7 @@
                                     },
                                     usePointStyle: true,
                                     color: '#e0e0e0',
-                                    padding: 25 // Increased padding below legend
+                                    padding: 25 // Keep padding below legend for now
                                 }
                             },
                             tooltip: {
@@ -458,7 +456,7 @@
                                     title: function(context) {
                                         // Use original labels for the tooltip title for better clarity
                                         // Join array of lines back to a single string for tooltip
-                                        return labels[context[0].dataIndex].join(' ');
+                                        return labels[context[0].dataIndex].replace(/([A-Z])/g, ' $1').trim(); // Add space before capitalized words for better readability in tooltip
                                     },
                                     label: function(context) {
                                         return context.dataset.label + ': ' + context.formattedValue;
@@ -480,13 +478,13 @@
                                 ticks: {
                                     color: '#e0e0e0',
                                     font: {
-                                        size: 12 // Slightly reduced font size to help with space
+                                        size: 11 // Slightly smaller font size to prevent overlap
                                     },
                                     autoSkip: false,
-                                    maxRotation: 89, // Almost vertical rotation
-                                    minRotation: 89,
+                                    maxRotation: 90, // Max rotation (vertical)
+                                    minRotation: 90,
                                     align: 'end', // Align text to the end (bottom-right when rotated)
-                                    padding: 30 // Increased padding for X-axis labels from the chart bottom
+                                    padding: 35 // Significantly increased padding for X-axis labels from the chart bottom
                                 },
                                 grid: {
                                     color: 'rgba(255, 255, 255, 0.1)',
@@ -514,10 +512,10 @@
                         },
                         layout: {
                             padding: {
-                                left: 50, // Increased left padding
-                                right: 50, // Increased right padding
-                                top: 40, // Increased top padding to push chart down from title
-                                bottom: 50 // Significantly increased bottom padding for more label space and to prevent cutoff
+                                left: 55, // Increased left padding
+                                right: 55, // Increased right padding
+                                top: 50, // Significantly increased top padding to push chart down from title
+                                bottom: 65 // Very significantly increased bottom padding for ample label space and to prevent cutoff
                             }
                         },
                         elements: {
@@ -538,4 +536,4 @@
         });
     </script>
 </body>
-</html>
+                </html>
