@@ -23,7 +23,7 @@ body {
     background-color: #24292e; /* Even darker header background (GitHub header like) */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); /* Subtle shadow */
     padding: 10px 20px;
-    z-index: 100;
+    z-index: 100; /* Ensure header is on top */
     position: relative;
     border-bottom: 1px solid #333; /* Darker border for GitHub look */
 }
@@ -57,7 +57,7 @@ body {
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); /* Softer shadow */
     box-sizing: border-box;
     flex-grow: 1;
-    overflow: hidden;
+    overflow-x: hidden; /* Prevent horizontal overflow within the content container */
     border: 1px solid #3d444c; /* Subtle border for definition */
 }
 
