@@ -1,0 +1,205 @@
+/* Global Reset and Base Styles */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    scroll-behavior: smooth;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    line-height: 1.6;
+    background-color: #1c2128; /* Dark gray for main background (similar to GitHub dark) */
+    color: #f0f0f0; /* Light text for contrast */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Header Styling */
+.main-header {
+    background-color: #24292e; /* Even darker header background (GitHub header like) */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); /* Subtle shadow */
+    padding: 10px 20px;
+    z-index: 100;
+    position: relative;
+    border-bottom: 1px solid #333; /* Darker border for GitHub look */
+}
+
+.header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+}
+
+.site-title {
+    color: #0088cc; /* Telegram/TON Blue */
+    font-size: 2.5em; /* Larger, more prominent title */
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    flex-shrink: 0;
+    text-shadow: none; /* Removed neon glow */
+}
+
+/* Container for the main page content */
+.content-container {
+    max-width: 900px;
+    margin: 30px auto;
+    background: #2f363d; /* Slightly lighter dark background for content (GitHub body like) */
+    padding: 40px;
+    border-radius: 8px; /* Softer border radius */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); /* Softer shadow */
+    box-sizing: border-box;
+    flex-grow: 1;
+    overflow: hidden;
+    border: 1px solid #3d444c; /* Subtle border for definition */
+}
+
+@media (max-width: 960px) {
+    .content-container {
+        margin-left: 20px;
+        margin-right: 20px;
+        width: auto;
+        padding: 25px;
+    }
+}
+@media (max-width: 600px) {
+    .content-container {
+        padding: 15px;
+    }
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #0088cc; /* Telegram/TON Blue for headings */
+    text-shadow: none; /* No glow */
+}
+
+p {
+    color: #f0f0f0; /* Ensure body text color is applied to paragraphs */
+}
+
+a {
+    color: #0088cc; /* Telegram/TON Blue for links */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #00aaff; /* Slightly lighter blue on hover */
+}
+
+.long-word-wrap-text {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+/* Footer Styling */
+footer {
+    text-align: center;
+    padding: 25px;
+    margin-top: auto;
+    background-color: #24292e; /* Dark background (GitHub footer like) */
+    color: #a0a0a0; /* Softer text color */
+    border-top: 1px solid #333;
+    width: 100%;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    font-size: 0.9em;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.4);
+}
+
+footer p {
+    margin-bottom: 5px;
+}
+
+footer a {
+    color: #0088cc; /* Telegram/TON Blue for footer links */
+    margin: 0 10px;
+}
+
+footer a:hover {
+    color: #00aaff; /* Lighter blue on hover */
+    text-decoration: underline;
+}
+
+/* Styling for the "Improve this page" Container and Link */
+.improve-page-container {
+    text-align: center;
+    padding: 15px;
+    margin: 20px auto;
+    max-width: 800px;
+    background-color: #2f363d; /* Consistent with content background */
+    border: 1px solid #3d444c;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    color: #f0f0f0;
+    font-size: 1em;
+}
+
+.improve-page-container p {
+    margin: 0;
+}
+
+.improve-page-container a.improve-page-link {
+    color: #0088cc; /* Telegram blue for action link */
+    text-decoration: underline;
+    font-weight: bold;
+    text-shadow: none;
+}
+
+.improve-page-container a.improve-page-link:hover {
+    color: #00aaff; /* Lighter blue on hover */
+    text-shadow: none;
+}
+
+/* Content specific styles */
+.content-container p {
+    margin-bottom: 1em;
+}
+
+.content-container ul {
+    list-style-type: none; /* Remove default bullets */
+    margin-left: 0;
+    padding-left: 20px;
+    margin-bottom: 1em;
+}
+
+.content-container ul li {
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 0.5em;
+}
+
+.content-container ul li::before {
+    content: '\2022'; /* Unicode bullet point */
+    color: #0088cc; /* Telegram blue bullet */
+    position: absolute;
+    left: 0;
+    font-size: 1.2em;
+    line-height: 1;
+}
+
+.content-container h1, .content-container h2, .content-container h3 {
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+}
+
+/* Responsive image styling for hero section */
+#hero img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Ensure chart containers have suitable background */
+.chart-container canvas {
+    background-color: #24292e; /* Dark background for charts within their container */
+    border-radius: 4px; /* Slight rounding for charts */
+}
