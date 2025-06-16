@@ -187,13 +187,14 @@
                         <div class="bar"></div>
                     </div>
                     <ul class="nav-links" id="navLinks">
-                        <li><a href="https://rfof-network.github.io/RFOF-NETWORK/" target="_blank">RFOF-NETWORK (Hauptseite)</a></li>
-                        <li><a href="https://rfof-network.github.io/InterBOxSpiderNet/" target="_blank">RFOF-spider-NET</a></li>
-                        <li><a href="https://rfof-network.github.io/PRAI/" target="_blank">PRAI-KI (Current)</a></li> <li><a href="https://rfof-network.github.io/RFOF-NETWORK/" target="_blank">RFOF-NETWORK</a></li>
-                        <li><a href="https://rfof-network.github.io/PRAI/" target="_blank">PRAI</a></li>
-                        <li><a href="https://rfof-network.org/" target="_blank">rfof-network.org</a></li>
-                        <li><a href="https://rfof-network.github.io/PRAI/" target="_blank">PRAI-BOx Blockchain-System</a></li>
-                        <li><a href="https://rfof-network.github.io/DDEUGGP/" target="_blank">BUBATZ-COIN</a></li>
+                        <li><a href="https://rfof-network.github.io/" target="_blank">RFOF-NETWORK (Hauptseite)</a></li>
+                        <li><a href="https://rfof-network-ready-for-our-future.github.io/RFOF-spider-NET-/" target="_blank">RFOF-spider-NET</a></li>
+                        <li><a href="https://qch-l-c.github.io/PRAI-KI-/" target="_blank">PRAI-KI</a></li>
+                        <li><a href="https://rfof-network.github.io/RFOF-NETWORK/" target="_blank">RFOF-NETWORK</a></li>
+                        <li><a href="https://rfof-network.github.io/PRAI-/#uebersicht" target="_blank">PRAI</a></li>
+                        <li><a href="https://rfof-network.github.io/rfof-network.org/" target="_blank">rfof-network.org</a></li>
+                        <li><a href="https://rfof-network.github.io/Comprensive-rfof-bitcoin.org-PRAI-BOx-Blockchain-System_Programm-Fusions-Reactor-System/" target="_blank">PRAI-BOx Blockchain-System</a></li>
+                        <li><a href="https://rfof-network.github.io/BUBATZ-COIN-official-CSC-DCV-/" target="_blank">BUBATZ-COIN</a></li>
                     </ul>
                 </div>
             </nav>
@@ -409,7 +410,13 @@
                                     color: '#e0e0e0', /* Chart axis text color for dark theme */
                                     font: {
                                         size: 12
-                                    }
+                                    },
+                                    autoSkip: false, // Prevent ticks from being skipped
+                                    maxRotation: 45, // Rotate labels to prevent overlap
+                                    minRotation: 0
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)' // Light grid lines for dark theme
                                 }
                             },
                             y: {
@@ -419,6 +426,9 @@
                                     font: {
                                         size: 12
                                     }
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)' // Light grid lines for dark theme
                                 }
                             }
                         }
@@ -427,16 +437,27 @@
             }
         };
 
-        // Function to wrap labels (16-char logic)
+        // Function to wrap labels (updated to be more robust)
         const wrapLabel = (label) => {
-            const maxLen = 16;
-            if (label.length <= maxLen) return label;
-            let parts = [];
-            for (let i = 0; i < label.length; i += maxLen) {
-                parts.push(label.substring(i, i + maxLen));
+            const words = label.split(' ');
+            let lines = [];
+            let currentLine = '';
+            const maxCharsPerLine = 15; // Adjusted character limit for better fit
+
+            words.forEach(word => {
+                if (currentLine.length + word.length + (currentLine ? 1 : 0) <= maxCharsPerLine) {
+                    currentLine += (currentLine ? ' ' : '') + word;
+                } else {
+                    lines.push(currentLine);
+                    currentLine = word;
+                }
+            });
+            if (currentLine) {
+                lines.push(currentLine);
             }
-            return parts;
+            return lines;
         };
+
 
         // Create charts on page load
         document.addEventListener('DOMContentLoaded', () => {
@@ -445,4 +466,4 @@
         });
     </script>
 </body>
-                          </html>
+    </html>
