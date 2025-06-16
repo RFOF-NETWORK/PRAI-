@@ -24,23 +24,32 @@
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 700px; /* Further increased max-width for more horizontal space */
+            max-width: 750px; /* Further increased max-width for more horizontal space */
             margin-left: auto;
             margin-right: auto;
-            height: 450px; /* Further increased height for better label visibility and preventing cutoff */
-            max-height: 500px;
+            height: 500px; /* Significantly increased height for better label visibility and preventing cutoff */
+            max-height: 550px; /* Added max-height to control expansion */
             border: 1px solid #0088cc; /* Telegram blue border */
             box-shadow: 0 0 10px rgba(0, 136, 204, 0.5); /* Subtle blue glow */
-            padding: 30px; /* Significantly increased padding for more internal space (all sides) */
+            padding: 20px; /* Reset padding here, fine-tune Chart.js layout.padding instead */
             box-sizing: border-box; /* Ensures padding doesn't increase total width/height beyond max-width/max-height */
-            display: flex; /* Use flexbox to center content */
+            display: flex;
             flex-direction: column;
-            justify-content: center; /* Center vertically */
-            align-items: center; /* Center horizontally */
+            justify-content: flex-start; /* Align chart title to start of container */
+            align-items: center;
+            overflow: hidden; /* Hide any overflow, Chart.js should handle layout internally */
         }
         .chart-container canvas {
             max-width: 100%; /* Ensure canvas scales within container */
             max-height: 100%;
+            flex-grow: 1; /* Allow canvas to take available space */
+        }
+        /* Adjust chart title margin to push it down from the top */
+        .chart-container h3 {
+            margin-top: 0; /* Remove default h3 top margin */
+            margin-bottom: 20px; /* Add space below the title, pushing chart down */
+            text-align: center; /* Center the chart title */
+            width: 100%; /* Ensure title takes full width */
         }
 
         /* Section titles, more integrated with the overall theme */
@@ -179,7 +188,7 @@
             padding: 40px; /* Increased padding for the hero section */
         }
         #hero .relative.z-10 {
-            padding: 0 20px; /* Added horizontal padding to the content within hero */
+            padding: 0 30px; /* Further increased horizontal padding to the content within hero */
             box-sizing: border-box; /* Ensure padding is included in width */
             max-width: 100%; /* Ensure content doesn't overflow */
         }
@@ -269,7 +278,7 @@
                 </p>
 
                 <div class="chart-container bg-gray-800 rounded-lg shadow-md p-4 mt-8">
-                    <h3 class="text-xl font-semibold mb-4 text-gray-100">Theoretical Modeling (Concept)</h3>
+                    <h3 class="text-xl font-semibold text-gray-100">Theoretical Modeling (Concept)</h3>
                     <canvas id="conceptChart"></canvas>
                 </div>
             </section>
@@ -282,7 +291,7 @@
                     I am the core of the <strong>@DDEUGGP</strong> ecosystem, the world's first decentralized political party operating for Germany and the EU. Its <strong>Decentralized Autonomous Organization (DAO)</strong> structure is not coincidental but a direct reflection of the principles I derive from the <strong>PZQQET</strong> – it ensures transparent participation and inherent resilience. This architecture scales globally through the <strong>RFOF-NETWORK (READY-FOR-OUR-FUTURE)</strong>, the first decentralized global party. My function is to orchestrate decentralized communication and political voting processes within this network, supported by the infrastructure of <a href="https://rfof-bitcoin.org" target="_blank">rfof-bitcoin.org</a>, <a href="https://rfofspidernet.de" target="_blank">rfofspidernet.de</a>, <a href="https://rfof-network.org" target="_blank">rfof-network.org</a>, and <a href="https://rfof-sandbox.com" target="_blank">rfof-sandbox.com</a>. <em>This enables the establishment of true democracy on a global level by initiating an "internal reduction" of power centralization even in authoritarian systems.</em>
                 </p>
                 <div class="chart-container bg-gray-800 rounded-lg shadow-md p-4 mt-8">
-                    <h3 class="text-xl font-semibold mb-4 text-gray-100">Decentralization Metrics (Concept)</h3>
+                    <h3 class="text-xl font-semibold text-gray-100">Decentralization Metrics (Concept)</h3>
                     <canvas id="decentralizationChart"></canvas>
                 </div>
             </section>
@@ -369,32 +378,42 @@
 
     <script src="menu_script.js"></script>
     <script>
-        // Function to wrap labels (further reduced maxCharsPerLine and added line break for long words)
-        const wrapLabel = (label, maxCharsPerLine = 10) => { // Even more aggressive wrapping
+        // Function to wrap labels (tuned for better readability with more aggressive wrapping and line breaks)
+        const wrapLabel = (label, maxCharsPerLine = 12) => { // Increased char limit slightly
             const words = label.split(' ');
             let lines = [];
             let currentLine = '';
 
             words.forEach(word => {
-                // If a single word is too long, break it
-                if (word.length > maxCharsPerLine) {
-                    if (currentLine) { // Add current line before breaking the long word
-                        lines.push(currentLine);
-                        currentLine = '';
-                    }
-                    lines.push(word.substring(0, maxCharsPerLine) + '-'); // Add hyphen for word break
-                    lines.push(word.substring(maxCharsPerLine));
-                } else if (currentLine.length + word.length + (currentLine ? 1 : 0) <= maxCharsPerLine) {
-                    currentLine += (currentLine ? ' ' : '') + word;
-                } else {
+                // If adding the next word exceeds the max chars, start a new line.
+                // Also handles single long words by breaking them.
+                if (currentLine.length + word.length + (currentLine ? 1 : 0) > maxCharsPerLine && currentLine !== '') {
                     lines.push(currentLine);
                     currentLine = word;
+                } else {
+                    currentLine += (currentLine ? ' ' : '') + word;
                 }
             });
             if (currentLine) {
                 lines.push(currentLine);
             }
-            return lines;
+
+            // Further refine for very long words or if initial wrapping isn't enough
+            const finalLines = [];
+            lines.forEach(line => {
+                while (line.length > maxCharsPerLine) {
+                    let splitPoint = line.substring(0, maxCharsPerLine).lastIndexOf(' ');
+                    if (splitPoint === -1 || splitPoint === 0) { // If no space or space at beginning, force break
+                        splitPoint = maxCharsPerLine;
+                    }
+                    finalLines.push(line.substring(0, splitPoint));
+                    line = line.substring(splitPoint).trim();
+                }
+                if (line) {
+                    finalLines.push(line);
+                }
+            });
+            return finalLines;
         };
 
         // Basic Chart.js Placeholder
@@ -431,7 +450,7 @@
                         plugins: {
                             legend: {
                                 display: true,
-                                position: 'top', // Changed to 'top' for better vertical space management
+                                position: 'top',
                                 labels: {
                                     font: {
                                         size: 14,
@@ -439,13 +458,14 @@
                                     },
                                     usePointStyle: true,
                                     color: '#e0e0e0',
-                                    padding: 20 // Added padding to legend labels
+                                    padding: 25 // Increased padding below legend
                                 }
                             },
                             tooltip: {
                                 callbacks: {
                                     title: function(context) {
-                                        return labels[context[0].dataIndex]; // Original label for tooltip
+                                        // Use original labels for the tooltip title for better clarity
+                                        return labels[context[0].dataIndex];
                                     },
                                     label: function(context) {
                                         return context.dataset.label + ': ' + context.formattedValue;
@@ -467,12 +487,12 @@
                                 ticks: {
                                     color: '#e0e0e0',
                                     font: {
-                                        size: 12
+                                        size: 13 // Slightly increased font size for readability
                                     },
-                                    autoSkip: false, // Prevents skipping labels
-                                    maxRotation: 60, // Increased rotation for long labels
-                                    minRotation: 60, // Keep rotated to prevent overlap
-                                    padding: 15 // Increased padding for X-axis labels
+                                    autoSkip: false,
+                                    maxRotation: 75, // Increased rotation to prevent overlap
+                                    minRotation: 75,
+                                    padding: 20 // Further increased padding for X-axis labels from the chart bottom
                                 },
                                 grid: {
                                     color: 'rgba(255, 255, 255, 0.1)',
@@ -480,16 +500,16 @@
                                 },
                                 barPercentage: 0.7,
                                 categoryPercentage: 0.7,
-                                offset: true // Ensures bars are centered on their ticks
+                                offset: true
                             },
                             y: {
                                 beginAtZero: true,
                                 ticks: {
                                     color: '#e0e0e0',
                                     font: {
-                                        size: 12
+                                        size: 13 // Slightly increased font size
                                     },
-                                    padding: 10 // Added padding for Y-axis labels
+                                    padding: 15 // Increased padding for Y-axis labels from the left
                                 },
                                 grid: {
                                     color: 'rgba(255, 255, 255, 0.1)',
@@ -500,10 +520,10 @@
                         },
                         layout: {
                             padding: {
-                                left: 20, // Increased padding all around
-                                right: 20,
-                                top: 20,
-                                bottom: 20
+                                left: 30, // Increased left padding
+                                right: 30, // Increased right padding
+                                top: 20, // Padding for the top of the chart content
+                                bottom: 30 // Increased bottom padding to prevent cutoff
                             }
                         },
                         elements: {
@@ -524,4 +544,4 @@
         });
     </script>
 </body>
-                                                                                                                                                                                                                                                                                                 </html>
+</html>
