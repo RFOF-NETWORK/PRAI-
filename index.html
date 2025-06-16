@@ -24,14 +24,14 @@
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 750px; /* Further increased max-width for more horizontal space */
+            max-width: 800px; /* Increased max-width for more horizontal space for labels */
             margin-left: auto;
             margin-right: auto;
-            height: 500px; /* Significantly increased height for better label visibility and preventing cutoff */
-            max-height: 550px; /* Added max-height to control expansion */
+            height: 550px; /* Further increased height for better label visibility and preventing cutoff */
+            max-height: 600px; /* Adjusted max-height */
             border: 1px solid #0088cc; /* Telegram blue border */
             box-shadow: 0 0 10px rgba(0, 136, 204, 0.5); /* Subtle blue glow */
-            padding: 20px; /* Reset padding here, fine-tune Chart.js layout.padding instead */
+            padding: 20px; /* Keep container padding minimal, control layout with Chart.js options */
             box-sizing: border-box; /* Ensures padding doesn't increase total width/height beyond max-width/max-height */
             display: flex;
             flex-direction: column;
@@ -47,7 +47,7 @@
         /* Adjust chart title margin to push it down from the top */
         .chart-container h3 {
             margin-top: 0; /* Remove default h3 top margin */
-            margin-bottom: 20px; /* Add space below the title, pushing chart down */
+            margin-bottom: 25px; /* Increased space below the title, pushing chart down */
             text-align: center; /* Center the chart title */
             width: 100%; /* Ensure title takes full width */
         }
@@ -379,7 +379,7 @@
     <script src="menu_script.js"></script>
     <script>
         // Function to wrap labels (tuned for better readability with more aggressive wrapping and line breaks)
-        const wrapLabel = (label, maxCharsPerLine = 12) => { // Increased char limit slightly
+        const wrapLabel = (label, maxCharsPerLine = 12) => {
             const words = label.split(' ');
             let lines = [];
             let currentLine = '';
@@ -487,12 +487,12 @@
                                 ticks: {
                                     color: '#e0e0e0',
                                     font: {
-                                        size: 13 // Slightly increased font size for readability
+                                        size: 13
                                     },
                                     autoSkip: false,
-                                    maxRotation: 75, // Increased rotation to prevent overlap
-                                    minRotation: 75,
-                                    padding: 20 // Further increased padding for X-axis labels from the chart bottom
+                                    maxRotation: 85, // Increased rotation to 85 degrees
+                                    minRotation: 85, // Keep rotated
+                                    padding: 25 // Further increased padding for X-axis labels from the chart bottom
                                 },
                                 grid: {
                                     color: 'rgba(255, 255, 255, 0.1)',
@@ -507,9 +507,9 @@
                                 ticks: {
                                     color: '#e0e0e0',
                                     font: {
-                                        size: 13 // Slightly increased font size
+                                        size: 13
                                     },
-                                    padding: 15 // Increased padding for Y-axis labels from the left
+                                    padding: 20 // Increased padding for Y-axis labels from the left
                                 },
                                 grid: {
                                     color: 'rgba(255, 255, 255, 0.1)',
@@ -520,10 +520,10 @@
                         },
                         layout: {
                             padding: {
-                                left: 30, // Increased left padding
-                                right: 30, // Increased right padding
-                                top: 20, // Padding for the top of the chart content
-                                bottom: 30 // Increased bottom padding to prevent cutoff
+                                left: 40, // Increased left padding significantly
+                                right: 40, // Increased right padding significantly
+                                top: 30, // Increased top padding
+                                bottom: 40 // Increased bottom padding for more label space
                             }
                         },
                         elements: {
