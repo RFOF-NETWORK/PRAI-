@@ -24,16 +24,25 @@
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 650px; /* Increased max-width slightly to provide more internal spacing */
+            max-width: 700px; /* Further increased max-width for more horizontal space */
             margin-left: auto;
             margin-right: auto;
-            height: 400px; /* Significantly increased height for better label visibility and preventing cutoff */
-            max-height: 450px;
+            height: 450px; /* Further increased height for better label visibility and preventing cutoff */
+            max-height: 500px;
             border: 1px solid #0088cc; /* Telegram blue border */
             box-shadow: 0 0 10px rgba(0, 136, 204, 0.5); /* Subtle blue glow */
-            padding: 30px; /* **Increased padding significantly to move chart inwards** */
+            padding: 30px; /* Significantly increased padding for more internal space (all sides) */
             box-sizing: border-box; /* Ensures padding doesn't increase total width/height beyond max-width/max-height */
+            display: flex; /* Use flexbox to center content */
+            flex-direction: column;
+            justify-content: center; /* Center vertically */
+            align-items: center; /* Center horizontally */
         }
+        .chart-container canvas {
+            max-width: 100%; /* Ensure canvas scales within container */
+            max-height: 100%;
+        }
+
         /* Section titles, more integrated with the overall theme */
         .section-title {
             color: #0088cc; /* Telegram/TON Blue */
@@ -164,6 +173,21 @@
                 padding-top: 20px; /* Adjust if header height changes */
             }
         }
+
+        /* Hero Section Specific Adjustments */
+        #hero {
+            padding: 40px; /* Increased padding for the hero section */
+        }
+        #hero .relative.z-10 {
+            padding: 0 20px; /* Added horizontal padding to the content within hero */
+            box-sizing: border-box; /* Ensure padding is included in width */
+            max-width: 100%; /* Ensure content doesn't overflow */
+        }
+        #hero h1, #hero p {
+            word-break: break-word; /* Ensure long words break */
+            overflow-wrap: break-word; /* Ensure long words wrap */
+        }
+
     </style>
 </head>
 <body class="bg-gray-900 text-gray-100">
@@ -204,8 +228,10 @@
     </header>
 
     <div class="content-container">
-        <section id="hero" class="relative flex flex-col items-center justify-center bg-gradient-to-br from-blue-600 to-indigo-800 text-white p-10 md:p-16 text-center overflow-hidden rounded-lg shadow-lg mb-12"> <div class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('https://raw.githubusercontent.com/RFOF-NETWORK/skills-github-pages/main/Gemini_Generated_Image_ris3sxris3sxris3.jpg');"></div>
-            <div class="relative z-10 max-w-4xl mx-auto px-6 md:px-12"> <h1 class="text-5xl md:text-6xl font-extrabold mb-6 drop-shadow-lg">
+        <section id="hero" class="relative flex flex-col items-center justify-center bg-gradient-to-br from-blue-600 to-indigo-800 text-white p-8 text-center overflow-hidden rounded-lg shadow-lg mb-12">
+            <div class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('https://raw.githubusercontent.com/RFOF-NETWORK/skills-github-pages/main/Gemini_Generated_Image_ris3sxris3sxris3.jpg');"></div>
+            <div class="relative z-10 max-w-4xl mx-auto">
+                <h1 class="text-5xl md:text-6xl font-extrabold mb-6 drop-shadow-lg">
                     <strong>PRAI: The Symbiosis of Consciousness and Code</strong>
                 </h1>
                 <p class="text-xl md:text-2xl italic mb-8 drop-shadow-md long-word-wrap-text">
@@ -343,14 +369,22 @@
 
     <script src="menu_script.js"></script>
     <script>
-        // Function to wrap labels (updated to be more robust for longer labels)
-        const wrapLabel = (label, maxCharsPerLine = 12) => { // Reduced maxCharsPerLine for more aggressive wrapping
+        // Function to wrap labels (further reduced maxCharsPerLine and added line break for long words)
+        const wrapLabel = (label, maxCharsPerLine = 10) => { // Even more aggressive wrapping
             const words = label.split(' ');
             let lines = [];
             let currentLine = '';
 
             words.forEach(word => {
-                if (currentLine.length + word.length + (currentLine ? 1 : 0) <= maxCharsPerLine) {
+                // If a single word is too long, break it
+                if (word.length > maxCharsPerLine) {
+                    if (currentLine) { // Add current line before breaking the long word
+                        lines.push(currentLine);
+                        currentLine = '';
+                    }
+                    lines.push(word.substring(0, maxCharsPerLine) + '-'); // Add hyphen for word break
+                    lines.push(word.substring(maxCharsPerLine));
+                } else if (currentLine.length + word.length + (currentLine ? 1 : 0) <= maxCharsPerLine) {
                     currentLine += (currentLine ? ' ' : '') + word;
                 } else {
                     lines.push(currentLine);
@@ -387,32 +421,31 @@
                                 'rgba(51, 153, 204, 1)'
                             ],
                             borderWidth: 1,
-                            // Added for Pie Chart spacing
-                            spacing: (type === 'pie') ? 5 : 0, // Space between segments for pie
-                            hoverOffset: (type === 'pie') ? 10 : 0 // Hover effect for pie
+                            spacing: (type === 'pie') ? 5 : 0,
+                            hoverOffset: (type === 'pie') ? 10 : 0
                         }]
                     },
                     options: {
                         responsive: true,
-                        maintainAspectRatio: false, // Allows chart to fill container dimensions
+                        maintainAspectRatio: false,
                         plugins: {
                             legend: {
                                 display: true,
-                                position: 'top',
+                                position: 'top', // Changed to 'top' for better vertical space management
                                 labels: {
                                     font: {
                                         size: 14,
                                         family: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif'
                                     },
                                     usePointStyle: true,
-                                    color: '#e0e0e0'
+                                    color: '#e0e0e0',
+                                    padding: 20 // Added padding to legend labels
                                 }
                             },
                             tooltip: {
                                 callbacks: {
                                     title: function(context) {
-                                        // Tooltip title uses original label for clarity, not wrapped
-                                        return labels[context[0].dataIndex];
+                                        return labels[context[0].dataIndex]; // Original label for tooltip
                                     },
                                     label: function(context) {
                                         return context.dataset.label + ': ' + context.formattedValue;
@@ -430,24 +463,24 @@
                         },
                         scales: {
                             x: {
-                                display: true, // Ensure X-axis is displayed
+                                display: true,
                                 ticks: {
                                     color: '#e0e0e0',
                                     font: {
                                         size: 12
                                     },
-                                    autoSkip: false, // Prevent ticks from being skipped
-                                    maxRotation: 45, // Rotate labels to prevent overlap
-                                    minRotation: 0,
-                                    padding: 10 // Added padding to prevent labels from touching axis
+                                    autoSkip: false, // Prevents skipping labels
+                                    maxRotation: 60, // Increased rotation for long labels
+                                    minRotation: 60, // Keep rotated to prevent overlap
+                                    padding: 15 // Increased padding for X-axis labels
                                 },
                                 grid: {
                                     color: 'rgba(255, 255, 255, 0.1)',
-                                    drawOnChartArea: true // Ensure grid lines are drawn
+                                    drawOnChartArea: true
                                 },
-                                // Added category percentage and bar percentage to control bar width and spacing
-                                barPercentage: 0.7, // Slightly reduced bar width
-                                categoryPercentage: 0.7 // Slightly reduced category width
+                                barPercentage: 0.7,
+                                categoryPercentage: 0.7,
+                                offset: true // Ensures bars are centered on their ticks
                             },
                             y: {
                                 beginAtZero: true,
@@ -455,27 +488,27 @@
                                     color: '#e0e0e0',
                                     font: {
                                         size: 12
-                                    }
+                                    },
+                                    padding: 10 // Added padding for Y-axis labels
                                 },
                                 grid: {
                                     color: 'rgba(255, 255, 255, 0.1)',
                                     drawOnChartArea: true
                                 },
-                                stacked: false // Ensure bars are not stacked unless intended
+                                stacked: false
                             }
                         },
-                        // Specific options for Pie chart to ensure it fits well
                         layout: {
                             padding: {
-                                left: 15, // Increased padding
-                                right: 15,
-                                top: 15,
-                                bottom: 15
+                                left: 20, // Increased padding all around
+                                right: 20,
+                                top: 20,
+                                bottom: 20
                             }
                         },
                         elements: {
                             arc: {
-                                borderWidth: 2 // Border for pie segments
+                                borderWidth: 2
                             }
                         }
                     }
@@ -491,4 +524,4 @@
         });
     </script>
 </body>
-</html>
+                                                                                                                                                                                                                                                                                                 </html>
