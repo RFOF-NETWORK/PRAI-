@@ -1,0 +1,203 @@
+/* Base styles for header and menu */
+.navbar {
+    display: flex;
+    align-items: center;
+    /* This will already push the navbar to the right of the site title */
+    margin-left: auto;
+    position: relative; /* Needed for positioning dropdowns */
+}
+
+/* Global Dropdown Container */
+.global-dropdown {
+    position: relative;
+    display: inline-block; /* Allows side-by-side with PRAI dropdown if needed */
+}
+
+/* Hamburger Icon (three bars) - remains the trigger for global menu on mobile */
+.hamburger-icon {
+    display: none; /* Hidden by default on larger screens */
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+    z-index: 1000;
+    margin-left: 20px; /* Space from PRAI menu button if both visible */
+}
+
+.hamburger-icon .bar {
+    width: 100%;
+    height: 3px;
+    background-color: #0088cc; /* Telegram blue bars */
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: none; /* No glow here */
+}
+
+/* Global Nav Links (the actual dropdown content) */
+.nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: none; /* Hidden by default on desktop, shown on hover/active */
+    position: absolute;
+    background-color: #2f363d; /* Dark background for dropdown */
+    min-width: 200px; /* Wider to accommodate longer link names */
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.6);
+    z-index: 1;
+    right: 0; /* Position to the right */
+    top: 100%; /* Position below the trigger */
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid #3d444c;
+}
+
+/* Show global dropdown on hover (desktop) */
+.global-dropdown:hover .nav-links {
+    display: block;
+}
+
+.nav-links li a {
+    color: #e0e0e0; /* Light text for links */
+    text-decoration: none;
+    padding: 12px 16px;
+    display: block;
+    text-align: left; /* Align text left within dropdown */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-weight: normal; /* Normal weight for dropdown items */
+    text-transform: none; /* No uppercase for dropdown items */
+    letter-spacing: normal;
+}
+
+.nav-links li a:hover {
+    background-color: #333; /* Darker grey hover background (GitHub like) */
+    color: #0088cc; /* Telegram blue on hover */
+}
+
+/* Media Queries for responsive design (crucial for hamburger menu) */
+@media (max-width: 768px) {
+    /* On mobile, show hamburger icon, hide desktop dropdown logic */
+    .global-dropdown .nav-links {
+        display: none; /* Hidden by default on small screens */
+        flex-direction: column;
+        width: 100%; /* Full width for mobile menu */
+        background-color: #24292e; /* Dark background for mobile menu */
+        padding: 10px 0;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        z-index: 999;
+        position: fixed; /* Fix menu to viewport */
+        top: 0;
+        right: 0; /* Align to the right */
+        height: 100%; /* Full height */
+        width: 280px; /* Wider menu for readability */
+        padding-top: 80px; /* Space for fixed header */
+        transform: translateX(100%); /* Start off-screen */
+        transition: transform 0.3s ease-in-out;
+        border-left: 1px solid #333; /* Border for separation */
+    }
+
+    .global-dropdown .nav-links.active {
+        display: flex; /* Show when active */
+        transform: translateX(0); /* Slide in */
+    }
+
+    .global-dropdown .nav-links li {
+        text-align: left;
+        margin: 0;
+        width: 100%;
+    }
+
+    .global-dropdown .nav-links li a {
+        color: #e0e0e0;
+        width: 100%;
+        padding: 15px 25px; /* Larger clickable area */
+        text-align: left;
+        border-bottom: 1px solid rgba(51, 51, 51, 0.5); /* Subtle separator */
+    }
+
+    .global-dropdown .nav-links li:last-child a {
+        border-bottom: none;
+    }
+
+    .global-dropdown .nav-links li a:hover {
+        background-color: #333; /* Darker hover for mobile */
+        color: #0088cc;
+    }
+
+    .hamburger-icon {
+        display: flex; /* Show hamburger on small screens */
+        position: relative; /* Keep it relative for initial positioning */
+    }
+    
+    .hamburger-icon.active {
+        position: fixed; /* Fix hamburger icon when menu is open */
+        right: 20px; /* Aligned to the right */
+        z-index: 1001;
+    }
+
+    /* Hamburger icon animation for 'X' */
+    .hamburger-icon.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger-icon.active .bar:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+
+    .hamburger-icon.active .bar:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+
+    /* Adjust the praibox-dropdown for mobile: make it integrate into the global menu when open */
+    .praibox-dropdown {
+        display: block; /* Ensure it shows up within the mobile menu flow */
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .praibox-dropdown-button {
+        width: calc(100% - 30px); /* Adjust width to fit mobile menu padding */
+        margin: 0 15px;
+        box-sizing: border-box; /* Include padding in width calculation */
+        border-bottom: 1px solid rgba(51, 51, 51, 0.5);
+        border-radius: 0; /* No rounded corners within mobile menu */
+    }
+
+    .praibox-dropdown-content {
+        position: static; /* Flow naturally within the mobile menu */
+        width: 100%;
+        box-shadow: none;
+        border: none; /* No extra border within mobile menu */
+        border-radius: 0;
+    }
+
+    .praibox-dropdown-content a {
+        padding-left: 40px; /* Indent PRAI sub-links for clarity */
+        border-bottom: 1px dashed rgba(51, 51, 51, 0.3); /* Lighter separator for sub-items */
+    }
+    .praibox-dropdown-content a:last-child {
+        border-bottom: none;
+    }
+}
+
+/* Desktop specific styles for global dropdown positioning */
+@media (min-width: 769px) {
+    .navbar {
+        justify-content: flex-end; /* Push all items to the right */
+        gap: 15px; /* Space between the two dropdowns */
+    }
+
+    .global-dropdown .nav-links {
+        display: none; /* Hidden until hover */
+        position: absolute;
+        right: 0; /* Align global dropdown to the very right */
+        top: 100%; /* Below the area where the hamburger/trigger would be */
+    }
+    .global-dropdown:hover .nav-links {
+        display: block;
+    }
+    
+    .hamburger-icon {
+        display: none; /* Always hidden on desktop */
+    }
+}
