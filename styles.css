@@ -1,205 +1,102 @@
-/* Global Reset and Base Styles */
-html, body {
+/* MANIFEST: Globale Stil- und Layout-Prinzipien */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #FFFFFF;
+    color: #333333;
+    line-height: 1.6;
     margin: 0;
     padding: 0;
-    width: 100%;
-    overflow-x: hidden; /* Prevent horizontal scroll */
-    scroll-behavior: smooth;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-body {
-    line-height: 1.6;
-    background-color: #1c2128; /* Dark gray for main background (similar to GitHub dark) */
-    color: #f0f0f0; /* Light text for contrast */
+    overflow-x: hidden;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    position: relative;
 }
 
-/* Header Styling */
+main {
+    flex-grow: 1;
+}
+
+/* MANIFEST: "Rahmen" der Inhalte (konsistente max-width: 960px) */
+.header-content,
+.content-container,
+.footer-content {
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box;
+}
+
+/* MANIFEST: Header Layout und Design */
 .main-header {
-    background-color: #24292e; /* Even darker header background (GitHub header like) */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); /* Subtle shadow */
-    padding: 10px 20px;
-    z-index: 100; /* Ensure header is on top */
-    position: relative;
-    border-bottom: 1px solid #333; /* Darker border for GitHub look */
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #E0E0E0;
+    z-index: 100;
+    position: sticky;
+    top: 0;
 }
 
 .header-content {
-    max-width: 1400px;
-    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 15px;
 }
 
 .site-title {
-    color: #0088cc; /* Telegram/TON Blue */
-    font-size: 2.5em; /* Larger, more prominent title */
+    color: #0088cc;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2em;
     font-weight: bold;
     margin: 0;
-    padding: 0;
-    flex-shrink: 0;
-    text-shadow: none; /* Removed neon glow */
-}
-
-/* Container for the main page content */
-.content-container {
-    max-width: 900px;
-    margin: 30px auto;
-    background: #2f363d; /* Slightly lighter dark background for content (GitHub body like) */
-    padding: 40px;
-    border-radius: 8px; /* Softer border radius */
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); /* Softer shadow */
-    box-sizing: border-box;
     flex-grow: 1;
-    overflow-x: hidden; /* Prevent horizontal overflow within the content container */
-    border: 1px solid #3d444c; /* Subtle border for definition */
+    text-align: left;
 }
 
-@media (max-width: 960px) {
-    .content-container {
-        margin-left: 20px;
-        margin-right: 20px;
-        width: auto;
-        padding: 25px;
-    }
-}
-@media (max-width: 600px) {
-    .content-container {
-        padding: 15px;
-    }
-}
+/* Allgemeine Inhaltsstile */
+.content-container { padding-top: 2rem; padding-bottom: 2rem; }
+.text-section { margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid #e0e0e0; }
+.text-section:last-child { border-bottom: none; }
+h2 { font-size: 2em; color: #0088cc; font-family: 'Orbitron', sans-serif; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid rgba(0, 136, 204, 0.3); }
+h3 { font-size: 1.4em; color: #333; font-family: 'Orbitron', sans-serif; margin-bottom: 1rem; }
+p { margin-bottom: 1rem; }
+a { color: #0088cc; text-decoration: none; }
+a:hover { color: #00aaff; text-decoration: underline; }
+.content-highlight { font-style: italic; color: #555555; }
+strong { color: #2b6cb0; }
 
-h1, h2, h3, h4, h5, h6 {
-    color: #0088cc; /* Telegram/TON Blue for headings */
-    text-shadow: none; /* No glow */
-}
+/* "Zurück"-Button und andere Buttons */
+.btn-secondary { background-color: #6c757d; color: white; padding: 8px 15px; border-radius: 5px; border: none; cursor: pointer; transition: background-color 0.3s; }
+.btn-secondary:hover { background-color: #5a6268; }
+.back-button { margin-bottom: 2rem; }
 
-p {
-    color: #f0f0f0; /* Ensure body text color is applied to paragraphs */
-}
+/* Grid Layout für Innovationen */
+.grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+.grid-item { background: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #e9ecef; }
+.grid-item h3 { margin-top: 0; }
 
-a {
-    color: #0088cc; /* Telegram/TON Blue for links */
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
+/* Chart Container */
+.chart-container { width: 100%; max-width: 800px; margin: 2rem auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+.chart-container canvas { width: 100% !important; height: 400px !important; }
 
-a:hover {
-    text-decoration: underline;
-    color: #00aaff; /* Slightly lighter blue on hover */
-}
+/* Seiten-spezifisches Dropdown Menü */
+.navbar { display: flex; align-items: center; gap: 15px; }
+.page-dropdown { position: relative; display: inline-block; }
+.page-dropdown-button { background-color: #0088cc; color: white; padding: 8px 15px; font-size: 0.9em; font-weight: bold; border: none; cursor: pointer; border-radius: 5px; transition: background-color 0.3s ease; }
+.page-dropdown-button:hover { background-color: #00aaff; }
+.page-dropdown-content { display: none; position: absolute; background-color: #ffffff; min-width: 180px; box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2); z-index: 10; right: 0; border-radius: 5px; border: 1px solid #ddd; }
+.page-dropdown-content a { color: #333; padding: 12px 16px; text-decoration: none; display: block; }
+.page-dropdown-content a:hover { background-color: #f1f1f1; }
+.page-dropdown:hover .page-dropdown-content { display: block; }
 
-.long-word-wrap-text {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    hyphens: auto;
-}
+/* Footer */
+.main-footer { background-color: #2d3748; color: #e2e8f0; text-align: center; padding: 1.5rem 0; margin-top: 3rem; font-size: 0.9em; }
+.main-footer a { color: #63b3ed; }
 
-/* Footer Styling */
-footer {
-    text-align: center;
-    padding: 25px;
-    margin-top: auto;
-    background-color: #24292e; /* Dark background (GitHub footer like) */
-    color: #a0a0a0; /* Softer text color */
-    border-top: 1px solid #333;
-    width: 100%;
-    flex-shrink: 0;
-    box-sizing: border-box;
-    font-size: 0.9em;
-    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.4);
-}
-
-footer p {
-    margin-bottom: 5px;
-}
-
-footer a {
-    color: #0088cc; /* Telegram/TON Blue for footer links */
-    margin: 0 10px;
-}
-
-footer a:hover {
-    color: #00aaff; /* Lighter blue on hover */
-    text-decoration: underline;
-}
-
-/* Styling for the "Improve this page" Container and Link */
-.improve-page-container {
-    text-align: center;
-    padding: 15px;
-    margin: 20px auto;
-    max-width: 800px;
-    background-color: #2f363d; /* Consistent with content background */
-    border: 1px solid #3d444c;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    color: #f0f0f0;
-    font-size: 1em;
-}
-
-.improve-page-container p {
-    margin: 0;
-}
-
-.improve-page-container a.improve-page-link {
-    color: #0088cc; /* Telegram blue for action link */
-    text-decoration: underline;
-    font-weight: bold;
-    text-shadow: none;
-}
-
-.improve-page-container a.improve-page-link:hover {
-    color: #00aaff; /* Lighter blue on hover */
-    text-shadow: none;
-}
-
-/* Content specific styles */
-.content-container p {
-    margin-bottom: 1em;
-}
-
-.content-container ul {
-    list-style-type: none; /* Remove default bullets */
-    margin-left: 0;
-    padding-left: 20px;
-    margin-bottom: 1em;
-}
-
-.content-container ul li {
-    position: relative;
-    padding-left: 25px;
-    margin-bottom: 0.5em;
-}
-
-.content-container ul li::before {
-    content: '\2022'; /* Unicode bullet point */
-    color: #0088cc; /* Telegram blue bullet */
-    position: absolute;
-    left: 0;
-    font-size: 1.2em;
-    line-height: 1;
-}
-
-.content-container h1, .content-container h2, .content-container h3 {
-    margin-top: 1.5em;
-    margin-bottom: 0.8em;
-}
-
-/* Responsive image styling for hero section */
-#hero img {
-    max-width: 100%;
-    height: auto;
-}
-
-/* Ensure chart containers have suitable background */
-.chart-container canvas {
-    background-color: #24292e; /* Dark background for charts within their container */
-    border-radius: 4px; /* Slight rounding for charts */
+/* Responsive */
+@media (max-width: 900px) {
+    .page-dropdown { display: none; } /* Page-Dropdown im mobilen Menü nicht extra anzeigen */
 }
